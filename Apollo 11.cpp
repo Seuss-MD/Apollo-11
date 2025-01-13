@@ -69,7 +69,15 @@ double computeAccel(THRUST, WEIGHT)
    * OUTPUT
    *     v : new velocity, in meters/second
    ***********************************************/
-   // your function goes here
+double computeVelocity (velocity, acceleration, time)
+{
+   double velocity;
+
+   //computes the velocity
+   velocity = velocity + accerlation * time;
+
+   return velocity;
+}
 
 
    /***********************************************
