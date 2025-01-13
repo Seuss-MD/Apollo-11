@@ -12,6 +12,7 @@
  **************************************************************/
 
 #include <iostream>  // for CIN and COUT
+#include <cmath>
 using namespace std;
 
 #define WEIGHT   15103.000   // Weight in KG
@@ -31,6 +32,13 @@ using namespace std;
  * OUTPUT
  *     s : new position, in meters
  **************************************************/
+double computeDistance(s, v, a, t)
+{
+   // get updated position
+   s = s + (v * t) + (1 / 2) a * t * t;
+
+   return s;
+}
  
 
  /**************************************************
@@ -80,25 +88,33 @@ double computeVelocity (velocity, acceleration, time)
 }
 
 
-   /***********************************************
-    * COMPUTE VERTICAL COMPONENT
-    * Find the vertical component of a velocity or acceleration.
-    * The equation is:
-    *     cos(a) = y / total
-    * This can be expressed graphically:
-    *      x
-    *    +-----
-    *    |   /
-    *  y |  / total
-    *    |a/
-    *    |/
-    * INPUT
-    *     a : angle, in radians
-    *     total : total velocity or acceleration
-    * OUTPUT
-    *     y : the vertical component of the total
-    ***********************************************/
-    // your function goes here
+/***********************************************
+ * COMPUTE VERTICAL COMPONENT
+ * Find the vertical component of a velocity or acceleration.
+ * The equation is:
+ *     cos(a) = y / total
+ * This can be expressed graphically:
+ *      x
+ *    +-----
+ *    |   /
+ *  y |  / total
+ *    |a/
+ *    |/
+ * INPUT
+ *     a : angle, in radians
+ *     total : total velocity or acceleration
+ * OUTPUT
+ *     y : the vertical component of the total
+ ***********************************************/
+double computeVerticalY(angle, total)
+{
+   double verticalY;
+
+   // compute y, y = cos(a) * total
+   verticalY = cos(angle) * total;
+
+   return verticalY;
+}
 
     /***********************************************
      * COMPUTE HORIZONTAL COMPONENT
@@ -118,7 +134,15 @@ double computeVelocity (velocity, acceleration, time)
      * OUTPUT
      *     x : the vertical component of the total
      ***********************************************/
-     // your function goes here
+double computeX(a, total)
+{
+   double x;
+
+   // x = sin(a) * total
+   x = sin(a) * total;
+
+   return x;
+}
 
      /************************************************
       * COMPUTE TOTAL COMPONENT
@@ -139,7 +163,15 @@ double computeVelocity (velocity, acceleration, time)
       * OUTPUT
       *    total : total component
       ***********************************************/
-      // your function goes here
+double computeTotal(x, y)
+{
+   double total;
+
+   // total = x^2 + y^2
+   total = (x * x) + (y * y);
+
+   return total;
+}
 
 
       /*************************************************
@@ -151,7 +183,16 @@ double computeVelocity (velocity, acceleration, time)
        * OUTPUT
        *     r : radians from 0 to 2pi
        **************************************************/
-       // your function goes here
+double getRadian(d)
+{
+   double r;
+   double pi = 2 * asin(1.0);
+
+   //convert to radian
+   r = d / 360 * 2 * pi;
+
+   return r
+}
 
        /**************************************************
         * PROMPT
@@ -161,33 +202,31 @@ double computeVelocity (velocity, acceleration, time)
         * OUTPUT
         *      response : the user's response
         ***************************************************/
-        // your function goes here
+double prompt(message)
+{
+   //display message
+   cout << message
 
-        /****************************************************************
-         * MAIN
-         * Prompt for input, compute new position, and display output
-         ****************************************************************/
+   //get response
+   double response;
+   cin >> response;
+
+   return response;
+}
+
+/****************************************************************
+ * MAIN
+ * Prompt for input, compute new position, and display output
+ ****************************************************************/
 int main()
 {
    // Prompt for input and variables to be computed
-   double dx;
-   cout << ("What is your horizontal velocity (m/s)? ");
-   cin  >> dx;
-   double dy;
-   cout << ("What is your vertical velocity (m/s)? ");
-   cin  >> dy;
-   double y;
-   cout << ("What is your altitude (m)? ");
-   cin  >> y;
-   double x;
-   cout << ("What is your position (m)? ");
-   cin  >> x;
-   double aDegrees;
-   cout << ("What is the angle of the LM where 0 is up (degrees)? ");
-   cin  >> aDegrees;
-   double t;
-   cout << ("What is the time interval (s)? ");
-   cin  >> t;
+   double dx = prompt("What is your horizontal velocity (m/s)? ");
+   double dy = prompt("What is your vertical velocity (m/s)? ");
+   double y = prompt("What is your altitude (m)? ");
+   double x = prompt("What is your position (m)? ");
+   double aDegrees = prompt("What is the angle of the LM where 0 is up (degrees)? ");
+   double t = prompt("What is the time interval (s)? ");
    double aRadians;            // Angle in radians
    double accelerationThrust;  // Acceleration due to thrust 
    double ddxThrust;           // Horizontal acceleration due to thrust
@@ -197,15 +236,19 @@ int main()
    double v;                   // Total velocity
 
    // Go through the simulator five times
-    
-     // Hint: Update the position _before_ updating the velocity
+   
+   for (int i = 0; i < 5; i++)
+   {
+      // Hint: Update the position _before_ updating the velocity
+      
 
-     // Output
-   cout.setf(ios::fixed | ios::showpoint);
-   cout.precision(2);
-   cout << "\tNew position:   (" << x << ", " << y << ")m\n";
-   cout << "\tNew velocity:   (" << dx << ", " << dy << ")m/s\n";
-   cout << "\tTotal velocity:  " << v << "m/s\n\n";
+      // Output
+      cout.setf(ios::fixed | ios::showpoint);
+      cout.precision(2);
+      cout << "\tNew position:   (" << x << ", " << y << ")m\n";
+      cout << "\tNew velocity:   (" << dx << ", " << dy << ")m/s\n";
+      cout << "\tTotal velocity:  " << v << "m/s\n\n";
+   }
 
 
    return 0;
