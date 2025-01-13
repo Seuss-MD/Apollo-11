@@ -44,7 +44,16 @@ using namespace std;
   * OUTPUT
   *     a : acceleration, in meters/second^2
   ***************************************************/
-  // your function goes here
+double computeAccel(THRUST, WEIGHT)
+{
+   double acceleration;
+
+   // computes acceleration using a = f / m
+   acceleration = THRUST / WEIGHT;
+
+   return acceleration;
+}
+
 
   /***********************************************
    * COMPUTE VELOCITY
