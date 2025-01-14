@@ -242,6 +242,7 @@ int main()
       
       accelerationThrust = computeAccel(THRUST, WEIGHT);
       aRadians = getRadian(aDegrees);
+      ddx = computeX(aRadians, accelerationThrust);
 
       //get position
       y = computeDistance(y, dy, accelerationThrust + GRAVITY, t);
@@ -255,6 +256,9 @@ int main()
 
       ddy = accelerationThrust + GRAVITY;
 
+      double totalV;
+      totalV = computeTotal(dx, dy);
+
       
 
       // Output
@@ -262,7 +266,7 @@ int main()
       cout.precision(2);
       cout << "\tNew position:   (" << x << ", " << y << ")m\n";
       cout << "\tNew velocity:   (" << dx << ", " << dy << ")m/s\n";
-      cout << "\tTotal velocity:  " << v << "m/s\n\n";
+      cout << "\tTotal velocity:  " << totalV << "m/s\n\n";
    }
 
 
