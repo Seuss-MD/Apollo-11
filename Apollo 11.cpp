@@ -32,10 +32,10 @@ using namespace std;
  * OUTPUT
  *     s : new position, in meters
  **************************************************/
-double computeDistance(s, v, a, t)
+double computeDistance(double s, double v, double a, double t)
 {
    // get updated position
-   s = s + (v * t) + (1 / 2) a * t * t;
+   s = s + (v * t) + (1.0 / 2.0) * a* t* t;
 
    return s;
 }
@@ -52,12 +52,12 @@ double computeDistance(s, v, a, t)
   * OUTPUT
   *     a : acceleration, in meters/second^2
   ***************************************************/
-double computeAccel(THRUST, WEIGHT)
+double computeAccel(double f, double m)
 {
    double acceleration;
 
    // computes acceleration using a = f / m
-   acceleration = THRUST / WEIGHT;
+   acceleration = f / m;
 
    return acceleration;
 }
@@ -77,12 +77,11 @@ double computeAccel(THRUST, WEIGHT)
    * OUTPUT
    *     v : new velocity, in meters/second
    ***********************************************/
-double computeVelocity (velocity, acceleration, time)
+double computeVelocity (double velocity, double acceleration, double time)
 {
-   double velocity;
 
    //computes the velocity
-   velocity = velocity + accerlation * time;
+   velocity = velocity + acceleration * time;
 
    return velocity;
 }
@@ -106,7 +105,7 @@ double computeVelocity (velocity, acceleration, time)
  * OUTPUT
  *     y : the vertical component of the total
  ***********************************************/
-double computeVerticalY(angle, total)
+double computeVerticalY(double angle, double total)
 {
    double verticalY;
 
@@ -134,7 +133,7 @@ double computeVerticalY(angle, total)
      * OUTPUT
      *     x : the vertical component of the total
      ***********************************************/
-double computeX(a, total)
+double computeX(double a, double total)
 {
    double x;
 
@@ -163,7 +162,7 @@ double computeX(a, total)
       * OUTPUT
       *    total : total component
       ***********************************************/
-double computeTotal(x, y)
+double computeTotal(double x, double y)
 {
    double total;
 
@@ -183,7 +182,7 @@ double computeTotal(x, y)
        * OUTPUT
        *     r : radians from 0 to 2pi
        **************************************************/
-double getRadian(d)
+double getRadian(double d)
 {
    double r;
    double pi = 2 * asin(1.0);
@@ -191,7 +190,7 @@ double getRadian(d)
    //convert to radian
    r = d / 360 * 2 * pi;
 
-   return r
+   return r;
 }
 
        /**************************************************
@@ -202,10 +201,10 @@ double getRadian(d)
         * OUTPUT
         *      response : the user's response
         ***************************************************/
-double prompt(message)
+double prompt(string message)
 {
    //display message
-   cout << message
+   cout << message;
 
    //get response
    double response;
@@ -240,6 +239,20 @@ int main()
    for (int i = 0; i < 5; i++)
    {
       // Hint: Update the position _before_ updating the velocity
+      
+      accelerationThrust = computeAccel(THRUST, WEIGHT);
+      aRadians = getRadian(aDegrees);
+
+      //get position
+      // get the change in x and y
+      // get the accleration
+      // get the velocity going up and down
+
+
+      ddy = accelerationThrust + GRAVITY;
+
+      x = computeDistance(x, dx, accelerationThrust, t);
+      y = computeDistance(y, dy, , t);
       
 
       // Output
