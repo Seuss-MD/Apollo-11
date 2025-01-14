@@ -167,7 +167,7 @@ double computeTotal(double x, double y)
    double total;
 
    // total = x^2 + y^2
-   total = (x * x) + (y * y);
+   total = sqrt((x * x) + (y * y));
 
    return total;
 }
@@ -239,26 +239,27 @@ int main()
    for (int i = 0; i < 5; i++)
    {
       // Hint: Update the position _before_ updating the velocity
-      
+
+      // acceleration
       accelerationThrust = computeAccel(THRUST, WEIGHT);
       aRadians = getRadian(aDegrees);
       ddx = computeX(aRadians, accelerationThrust);
+      ddy = computeVerticalY(aRadians, accelerationThrust) + GRAVITY;
+      
 
       //get position
-      y = computeDistance(y, dy, accelerationThrust + GRAVITY, t);
-      x = computeDistance(x, dx, accelerationThrust, t);
+      y = computeDistance(y, dy, ddy, t);
+      x = computeDistance(x, dx, ddx, t);
       
+      // velocity
+      dx = computeVelocity(dx, ddx, t);
+      dy = computeVelocity(dy, ddy, t);
 
       // get the change in x and y
       // get the accleration
       // get the velocity going up and down
 
-
-      ddy = accelerationThrust + GRAVITY;
-
-      double totalV;
-      totalV = computeTotal(dx, dy);
-
+      v = computeTotal(dx, dy);
       
 
       // Output
@@ -266,7 +267,7 @@ int main()
       cout.precision(2);
       cout << "\tNew position:   (" << x << ", " << y << ")m\n";
       cout << "\tNew velocity:   (" << dx << ", " << dy << ")m/s\n";
-      cout << "\tTotal velocity:  " << totalV << "m/s\n\n";
+      cout << "\tTotal velocity:  " << v << "m/s\n\n";
    }
 
 
