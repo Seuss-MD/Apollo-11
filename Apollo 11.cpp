@@ -244,6 +244,10 @@ int main()
       aRadians = getRadian(aDegrees);
 
       //get position
+      y = computeDistance(y, dy, accelerationThrust + GRAVITY, t);
+      x = computeDistance(x, dx, accelerationThrust, t);
+      
+
       // get the change in x and y
       // get the accleration
       // get the velocity going up and down
@@ -251,8 +255,6 @@ int main()
 
       ddy = accelerationThrust + GRAVITY;
 
-      x = computeDistance(x, dx, accelerationThrust, t);
-      y = computeDistance(y, dy, , t);
       
 
       // Output
