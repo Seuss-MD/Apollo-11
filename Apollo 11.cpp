@@ -289,6 +289,9 @@ int main()
    // get accelerationThrust
    accelerationThrust = computeAcceleration(THRUST, WEIGHT);
 
+   // Display message
+   cout << "\nFor the next 5 seconds with the main engine on, the position of the lander is:\n\n";
+
    // Go through the simulator five times
    for (int i = 0; i < 5; i++)
    {
@@ -313,7 +316,35 @@ int main()
          << "angle:" << aDegrees << "deg" << endl;
    }
 
-   cout << "What is the new angle ? ";
+   cout << "\nWhat is the new angle of the LM where 0 is up (degrees)? ";
+   cin >> aDegrees;
+
+   // Display message
+   cout << "\nFor the next 5 seconds with the main engine on, the position of the lander is:\n\n";
+
+   // Go through the simulator five times
+   for (int i = 6; i < 11; i++)
+   {
+      // Run simulator
+      vector<double> physicsList = runSim(accelerationThrust, aDegrees, y, x, dy, dx, t);
+      // list contents : physicsList = { x, y, dx, dy, v, aDegrees };
+
+      x = physicsList[0];
+      y = physicsList[1];
+      dx = physicsList[2];
+      dy = physicsList[3];
+      v = physicsList[4];
+      aDegrees = physicsList[5];
+
+      // Output
+      cout.setf(ios::fixed | ios::showpoint);
+      cout.precision(2);
+      cout << i << "s - "
+         << "x,y:(" << x << ", " << y << ")m  "
+         << "dx,dy:(" << dx << ", " << dy << ")m/s  "
+         << "speed:" << v << "m/s  "
+         << "angle:" << aDegrees << "deg" << endl;
+   }
 
    return 0;
 }
