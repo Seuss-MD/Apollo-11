@@ -13,6 +13,7 @@
 
 #include <iostream>  // for CIN and COUT
 #include <cmath>     // for pi, sin(), and cos()
+#include <vector>      // for the physics list
 using namespace std;
 
 #define WEIGHT   15103.000   // Weight in KG
@@ -214,6 +215,51 @@ double prompt(string message)
    return response;
 }
 
+/***************************************************
+* RUN SIMULATOR
+* calls other functions to calculate physics for simulator
+* INPUT
+*      accelerationThrust : acceleration of thrust
+*      aDegreees : angle in degrees
+*      y : altitude in meters
+*      x : horizontal position in meters
+*      dy : vertical velocity in m/s
+*      dx : horizontal velocity in m/s
+*      t : time in seconds
+* OUTPUT
+*      physicsList : [x, y, dx, dy, v, aDegrees]
+*           v : total speed m/s
+**************************************************/
+vector<double> runSim(double accelerationThrust, double aDegrees, double y, double x, double dy, double dx, double t)
+{
+   double aRadians;                    // Angle in radians
+   double ddx;                         // Total horizontal acceleration
+   double ddy;                         // Total vertical acceleration
+   double v;                           // Total velocity
+
+   // get radians
+   aRadians = getRadian(aDegrees);
+
+   // get the total acceleration of the horizontal and vertical
+   ddx = computeHorizontal(aRadians, accelerationThrust);
+   ddy = computeVertical(aRadians, accelerationThrust) + GRAVITY;
+
+
+   //get the new position
+   y = computeDistance(y, dy, ddy, t);
+   x = computeDistance(x, dx, ddx, t);
+
+   // get the new velocity
+   dx = computeVelocity(dx, ddx, t);
+   dy = computeVelocity(dy, ddy, t);
+   v = computeTotal(dx, dy);
+
+   // append to the list
+   vector<double> physicsList = { x, y, dx, dy, v, aDegrees };
+
+   return physicsList;
+}
+
 /****************************************************************
  * MAIN
  * Prompt for input, compute new position, and display output
@@ -221,19 +267,24 @@ double prompt(string message)
 int main()
 {
    // Prompt for input and variables to be computed
-   double dx = prompt("What is your horizontal velocity (m/s)? ");
    double dy = prompt("What is your vertical velocity (m/s)? ");
+   double dx = prompt("What is your horizontal velocity (m/s)? ");
    double y = prompt("What is your altitude (m)? ");
-   double x = prompt("What is your position (m)? ");
+   //double x = prompt("What is your position (m)? ");
+   double x;                   // Position in meters
    double aDegrees = prompt("What is the angle of the LM where 0 is up (degrees)? ");
-   double t = prompt("What is the time interval (s)? ");
-   double aRadians;            // Angle in radians
-   double accelerationThrust;  // Acceleration due to thrust 
+   //double t = prompt("What is the time interval (s)? ");
+   double t;                   // Time in seconds
    double ddxThrust;           // Horizontal acceleration due to thrust
    double ddyThrust;           // Vertical acceleration due to thrust
-   double ddx;                 // Total horizontal acceleration
-   double ddy;                 // Total vertical acceleration
+   double accelerationThrust;  // Acceleration due to thrust 
    double v;                   // Total velocity
+
+   // Establish horizontal position
+   x = 0;
+
+   // Establish time
+   t = 1;
 
    // get accelerationThrust
    accelerationThrust = computeAcceleration(THRUST, WEIGHT);
@@ -241,30 +292,28 @@ int main()
    // Go through the simulator five times
    for (int i = 0; i < 5; i++)
    {
-      // get radians
-      aRadians = getRadian(aDegrees);
-      
-      // get the total acceleration of the horizontal and vertical
-      ddx = computeHorizontal(aRadians, accelerationThrust);
-      ddy = computeVertical(aRadians, accelerationThrust) + GRAVITY;
-      
+      // Run simulator
+      vector<double> physicsList = runSim(accelerationThrust, aDegrees, y, x, dy, dx, t);
+      // list contents : physicsList = { x, y, dx, dy, v, aDegrees };
 
-      //get the new position
-      y = computeDistance(y, dy, ddy, t);
-      x = computeDistance(x, dx, ddx, t);
-      
-      // get the new velocity
-      dx = computeVelocity(dx, ddx, t);
-      dy = computeVelocity(dy, ddy, t);
-      v = computeTotal(dx, dy);
+      x = physicsList[0];
+      y = physicsList[1];
+      dx = physicsList[2];
+      dy = physicsList[3];
+      v = physicsList[4];
+      aDegrees = physicsList[5];
 
       // Output
       cout.setf(ios::fixed | ios::showpoint);
       cout.precision(2);
-      cout << "\tNew position:   (" << x << ", " << y << ")m\n";
-      cout << "\tNew velocity:   (" << dx << ", " << dy << ")m/s\n";
-      cout << "\tTotal velocity:  " << v << "m/s\n\n";
+      cout << i << "s - "
+         << "x,y:(" << x << ", " << y << ")m  "
+         << "dx,dy:(" << dx << ", " << dy << ")m/s  "
+         << "speed:" << v << "m/s  "
+         << "angle:" << aDegrees << "deg" << endl;
    }
+
+   cout << "What is the new angle ? ";
 
    return 0;
 }
