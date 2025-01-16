@@ -6,7 +6,8 @@
 * 3. Assignment Description:
 *      Compute how the Apollo lander will move across the screen
 * 4. What was the hardest part? Be as specific as possible.
-*      Understanding the physics for the assignment
+*      Understanding the physics, and creating a function that we could
+*      use twice with many parameters and return values.
 * 5. How long did it take for you to complete the assignment?
 *      About 4 hours
 **************************************************************/
@@ -217,7 +218,8 @@ double prompt(string message)
 
 /***************************************************
 * RUN SIMULATOR
-* calls other functions to calculate physics for simulator
+* calls other functions using user input to calculate
+* new x, y position, new dx, dy valocity, and total velocity
 * INPUT
 *      accelerationThrust : acceleration of thrust
 *      aDegreees : angle in degrees
@@ -244,7 +246,6 @@ vector<double> runSim(double accelerationThrust, double aDegrees, double y, doub
    ddx = computeHorizontal(aRadians, accelerationThrust);
    ddy = computeVertical(aRadians, accelerationThrust) + GRAVITY;
 
-
    //get the new position
    y = computeDistance(y, dy, ddy, t);
    x = computeDistance(x, dx, ddx, t);
@@ -270,10 +271,8 @@ int main()
    double dy = prompt("What is your vertical velocity (m/s)? ");
    double dx = prompt("What is your horizontal velocity (m/s)? ");
    double y = prompt("What is your altitude (m)? ");
-   //double x = prompt("What is your position (m)? ");
-   double x;                   // Position in meters
    double aDegrees = prompt("What is the angle of the LM where 0 is up (degrees)? ");
-   //double t = prompt("What is the time interval (s)? ");
+   double x;                   // Position in meters
    double t;                   // Time in seconds
    double ddxThrust;           // Horizontal acceleration due to thrust
    double ddyThrust;           // Vertical acceleration due to thrust
@@ -289,7 +288,7 @@ int main()
    // get accelerationThrust
    accelerationThrust = computeAcceleration(THRUST, WEIGHT);
 
-   // Display message
+   // Display instruction message
    cout << "\nFor the next 5 seconds with the main engine on, the position of the lander is:\n\n";
 
    // Go through the simulator five times
@@ -297,7 +296,7 @@ int main()
    {
       // Run simulator
       vector<double> physicsList = runSim(accelerationThrust, aDegrees, y, x, dy, dx, t);
-      // list contents : physicsList = { x, y, dx, dy, v, aDegrees };
+      // return list contents : physicsList = { x, y, dx, dy, v, aDegrees };
 
       x = physicsList[0];
       y = physicsList[1];
@@ -316,10 +315,11 @@ int main()
          << "angle:" << aDegrees << "deg" << endl;
    }
 
+   // Prompt for new angle for next 5 seconds
    cout << "\nWhat is the new angle of the LM where 0 is up (degrees)? ";
    cin >> aDegrees;
 
-   // Display message
+   // Display instruction message
    cout << "\nFor the next 5 seconds with the main engine on, the position of the lander is:\n\n";
 
    // Go through the simulator five times
@@ -327,7 +327,7 @@ int main()
    {
       // Run simulator
       vector<double> physicsList = runSim(accelerationThrust, aDegrees, y, x, dy, dx, t);
-      // list contents : physicsList = { x, y, dx, dy, v, aDegrees };
+      // return list contents : physicsList = { x, y, dx, dy, v, aDegrees };
 
       x = physicsList[0];
       y = physicsList[1];
@@ -345,6 +345,5 @@ int main()
          << "speed:" << v << "m/s  "
          << "angle:" << aDegrees << "deg" << endl;
    }
-
    return 0;
 }
