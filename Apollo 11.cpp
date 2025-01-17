@@ -223,8 +223,8 @@ double prompt(string message)
 * INPUT
 *      accelerationThrust : acceleration of thrust
 *      aDegreees : angle in degrees
-*      y : altitude in meters
 *      x : horizontal position in meters
+*      y : altitude in meters
 *      dy : vertical velocity in m/s
 *      dx : horizontal velocity in m/s
 *      t : time in seconds
@@ -232,7 +232,9 @@ double prompt(string message)
 *      physicsList : [x, y, dx, dy, v, aDegrees]
 *           v : total speed m/s
 **************************************************/
-vector<double> runSim(double accelerationThrust, double aDegrees, double y, double x, double dy, double dx, double t)
+vector<double> runSim(double accelerationThrust, double aDegrees, 
+                      double x, double y, 
+                      double dy, double dx, double t)
 {
    double aRadians;                    // Angle in radians
    double ddx;                         // Total horizontal acceleration
@@ -268,8 +270,8 @@ vector<double> runSim(double accelerationThrust, double aDegrees, double y, doub
 int main()
 {
    // Prompt for input and variables to be computed
-   double dy = prompt("What is your vertical velocity (m/s)? ");
    double dx = prompt("What is your horizontal velocity (m/s)? ");
+   double dy = prompt("What is your vertical velocity (m/s)? ");
    double y = prompt("What is your altitude (m)? ");
    double aDegrees = prompt("What is the angle of the LM where 0 is up (degrees)? ");
    double x;                   // Position in meters
@@ -295,7 +297,7 @@ int main()
    for (int i = 0; i < 5; i++)
    {
       // Run simulator
-      vector<double> physicsList = runSim(accelerationThrust, aDegrees, y, x, dy, dx, t);
+      vector<double> physicsList = runSim(accelerationThrust, aDegrees, x, y, dy, dx, t);
       // return list contents : physicsList = { x, y, dx, dy, v, aDegrees };
 
       x = physicsList[0];
@@ -326,7 +328,7 @@ int main()
    for (int i = 6; i < 11; i++)
    {
       // Run simulator
-      vector<double> physicsList = runSim(accelerationThrust, aDegrees, y, x, dy, dx, t);
+      vector<double> physicsList = runSim(accelerationThrust, aDegrees, x, y, dy, dx, t);
       // return list contents : physicsList = { x, y, dx, dy, v, aDegrees };
 
       x = physicsList[0];
